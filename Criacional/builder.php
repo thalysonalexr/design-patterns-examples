@@ -75,7 +75,7 @@ final class BuilderComputer {
     }
 
     public function build(): self {
-        return new Computer(self);
+        return new Computer($this);
     }
 }
 
@@ -84,6 +84,7 @@ $obj = new BuilderComputer()
               ->setMemoria("32GB")
               ->setProcessador("i7 6ª geração")
               ->setCooler("Corsair");
+              ->build();
 
 
 var_dump($obj);
