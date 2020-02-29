@@ -17,7 +17,7 @@ final class Computer {
     private $processador;
 
     public function __construct(BuilderComputer $builder) {
-        $this->plavaVideo  = $builder->getPlacaVideo();
+        $this->placaVideo  = $builder->getPlacaVideo();
         $this->memoria     = $builder->getMemoria();
         $this->cooler      = $builder->getCooler();
         $this->processador = $builder->getProcessador();
@@ -74,17 +74,16 @@ final class BuilderComputer {
         return $this->cooler;
     }
 
-    public function build(): self {
+    public function build(): Computer {
         return new Computer($this);
     }
 }
 
-$obj = new BuilderComputer()
+$obj = (new BuilderComputer())
               ->setPlacaDeVideo("GTX 1080 TI")
               ->setMemoria("32GB")
               ->setProcessador("i7 6ª geração")
-              ->setCooler("Corsair");
+              ->setCooler("Corsair")
               ->build();
-
 
 var_dump($obj);
