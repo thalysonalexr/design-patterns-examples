@@ -39,7 +39,7 @@ class Prisma extends Carro {
 
 type CarroType = 'Amarok' | 'HB20' | 'Prisma' | 'Carro';
 
-class CarroFactory {
+abstract class CarroFactory {
   public static create(carro: CarroType): CarroInterface {
     let instance: CarroInterface;
     switch (carro) {
