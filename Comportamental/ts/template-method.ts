@@ -1,16 +1,8 @@
-interface BuilderInterface {
-  test(): string
-  lint(): string
-  assemble(): string
-  deploy(): string
-}
-
-class Builder implements BuilderInterface {
-  protected device: string
-
-  constructor(device: string) {
-    this.device = device
-  }
+abstract class Builder {
+  public abstract test(): string
+  public abstract lint(): string
+  public abstract assemble(): string
+  public abstract deploy(): string
 
   public build(): void {
     console.log(this.test())
@@ -18,33 +10,41 @@ class Builder implements BuilderInterface {
     console.log(this.assemble())
     console.log(this.deploy())
   }
-  
-  public test(): string {
-    return `testing ${this.device}`
-  }
-
-  public lint(): string  {
-    return `lint ${this.device}`
-  }
-
-  public assemble(): string  {
-    return `assemple ${this.device}`
-  }
-
-  public deploy(): string  {
-    return `deploy ${this.device}`
-  }
 }
 
 class AndroidBuilder extends Builder {
-  constructor() {
-    super('Android')
+  public test(): string {
+    return `testing Android`
+  }
+
+  public lint(): string  {
+    return `lint Android`
+  }
+
+  public assemble(): string  {
+    return `assemple Android`
+  }
+
+  public deploy(): string  {
+    return `deploy Android`
   }
 }
 
 class IOsBuilder extends Builder {
-  constructor() {
-    super('IOs')
+  public test(): string {
+    return `testing IOs`
+  }
+
+  public lint(): string  {
+    return `lint IOs`
+  }
+
+  public assemble(): string  {
+    return `assemple IOs`
+  }
+
+  public deploy(): string  {
+    return `deploy IOs`
   }
 }
 
