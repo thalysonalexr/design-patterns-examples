@@ -4,7 +4,6 @@ interface SorterInterface {
 
 class BubbleSort implements SorterInterface {
   public sort(data: Array<number>): Array<number> {
-    console.log('using bubble sort...')
     for (let i = 0; i < data.length; i++) {
       let swapped: boolean = false
       for (let j = 0; j < data.length - 1; j++) {
@@ -25,7 +24,6 @@ class BubbleSort implements SorterInterface {
 
 class InsertionSort implements SorterInterface {
   public sort(data: Array<number>): Array<number> {
-    console.log('using insertion sort...')
     for (let i = 1; i < data.length; i++) {
       let element = data[i]
       let j = i
@@ -41,7 +39,7 @@ class InsertionSort implements SorterInterface {
   }
 }
 
-class Sorter {
+class Sorter implements SorterInterface {
   private sorter: SorterInterface
 
   constructor(sorter: SorterInterface) {
@@ -53,12 +51,14 @@ class Sorter {
   }
 }
 
-const data = [4,3,10]
+const data = [4, 3, 10]
 let sorter: SorterInterface;
 
 if (data.length <= 5) {
+  console.log('using bubble sort...')
   sorter = new Sorter(new BubbleSort());
 } else {
+  console.log('using insertion sort...')
   sorter = new Sorter(new InsertionSort());
 }
 

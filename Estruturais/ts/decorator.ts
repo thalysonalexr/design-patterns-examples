@@ -1,80 +1,60 @@
-// https://github.com/design-patterns-for-humans/brazilian-portuguese#-decorator
-
 interface CoffeInterface {
-  cost(): number
-  description(): string
+  details(): string
 }
 
-class SimpleCoffe implements CoffeInterface {
-  public cost(): number {
-    return 10
+@MilkCoffe
+@WhipCoffe
+@VanillaCoffe
+class Coffe implements CoffeInterface {
+  public constructor(private _cost: number, private _description: string) {}
+  
+  public get cost(): number {
+    return this._cost
   }
 
-  public description(): string {
-    return 'Simple coffe'
-  }
-}
-
-class MilkCoffe implements CoffeInterface {
-  protected coffe: CoffeInterface
-
-  public cost(): number {
-    return this.coffe.cost() + 2
+  public get description(): string {
+    return this._description
   }
 
-  public description(): string {
-    return this.coffe.description() + ', milk'
-  }
-
-  constructor(coffe: CoffeInterface) {
-    this.coffe = coffe
+  public details(): string {
+    return `
+    Desc: ${this.description}
+    Price: ${this.cost.toFixed(2)} $`
   }
 }
 
-class WhipCoffe implements CoffeInterface {
-  protected coffe: CoffeInterface
+type Constructor = { new(...args: any[]): {} }
 
-  public cost(): number {
-    return this.coffe.cost() + 5
-  }
-
-  public description(): string {
-    return this.coffe.description() + ', whip'
-  }
-
-  constructor(coffe: CoffeInterface) {
-    this.coffe = coffe
+function MilkCoffe<T extends Constructor>(constructor: T) {
+  return class extends constructor {
+    constructor(...args: any[]) {
+      let [cost, description] = args
+      cost += 2
+      super(cost, `${description} + milk`)
+    }
   }
 }
 
-class VanillaCoffe implements CoffeInterface {
-  protected coffe: CoffeInterface
-
-  public cost(): number {
-    return this.coffe.cost() + 3
-  }
-
-  public description(): string {
-    return this.coffe.description() + ', vanilla'
-  }
-
-  constructor(coffe: CoffeInterface) {
-    this.coffe = coffe
+function WhipCoffe<T extends Constructor>(constructor: T) {
+  return class extends constructor {
+    constructor(...args: any[]) {
+      let [cost, description] = args
+      cost += 5
+      super(cost, `${description} + whip`)
+    }
   }
 }
 
-let someCoffe = new SimpleCoffe()
-console.log(someCoffe.cost())
-console.log(someCoffe.description())
+function VanillaCoffe<T extends Constructor>(constructor: T) {
+  return class extends constructor {
+    constructor(...args: any[]) {
+      let [cost, description] = args
+      cost += 3
+      super(cost, `${description} + vanilla`)
+    }
+  }
+}
 
-someCoffe = new MilkCoffe(someCoffe)
-console.log(someCoffe.cost())
-console.log(someCoffe.description())
+const coffe: CoffeInterface = new Coffe(5, 'Coffe Starbucks')
 
-someCoffe = new WhipCoffe(someCoffe)
-console.log(someCoffe.cost())
-console.log(someCoffe.description())
-
-someCoffe = new VanillaCoffe(someCoffe)
-console.log(someCoffe.cost())
-console.log(someCoffe.description())
+console.log(coffe.details())

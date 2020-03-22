@@ -5,7 +5,7 @@ interface ServerInterface {
   initRoutes(): void
 }
 
-class Server  implements ServerInterface {
+class Server implements ServerInterface {
   public setMiddlewares(): void {
     console.log('setting middlewares...')
   }

@@ -8,11 +8,7 @@ interface Observable {
 }
 
 class SocialNetwork {
-  protected name: string
-
-  constructor(name: string) {
-    this.name = name
-  }
+  constructor(protected name: string) {}
 }
 
 class FriendSocialNetwork extends SocialNetwork implements Observer {
@@ -27,11 +23,9 @@ class FriendSocialNetwork extends SocialNetwork implements Observer {
 }
 
 class MyAccountSocialNetwork extends SocialNetwork implements Observable {
-  private observers: Array<Observer> = new Array
+  private observers: Array<Observer> = new Array<Observer>()
 
-  constructor(name: string) {
-    super(name)
-  }
+  constructor(name: string) { super(name) }
 
   public addObserver(observer: Observer): void {
     this.observers.push(observer);
@@ -44,7 +38,7 @@ class MyAccountSocialNetwork extends SocialNetwork implements Observable {
   }
 
   public newPost(post: string): void {
-    console.log('criando um novo post...')
+    console.log(`criando um novo post sobre ${post}`)
     this.notifyAll()
   }
 

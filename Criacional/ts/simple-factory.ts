@@ -4,37 +4,31 @@ interface CarroInterface {
 }
 
 class Carro implements CarroInterface {
-  private name: string;
-
-  constructor(name: string) {
-    this.name = name;
-  }
+  constructor(private _name: string) {}
 
   public dirigir() {
     return 'Vrummmmm...'
   }
 
   public getName(): string {
-    return this.name;
+    return `Carro: ${this.name}`
+  }
+
+  public get name(): string {
+    return this._name;
   }
 }
 
 class Amarok extends Carro {
-  constructor(name: string) {
-    super(name)
-  }
+  constructor(name: string) { super(name) }
 }
 
 class HB20 extends Carro {
-  constructor(name: string) {
-    super(name)
-  }
+  constructor(name: string) { super(name) }
 }
 
 class Prisma extends Carro {
-  constructor(name: string) {
-    super(name)
-  }
+  constructor(name: string) { super(name) }
 }
 
 type CarroType = 'Amarok' | 'HB20' | 'Prisma' | 'Carro';
@@ -67,5 +61,5 @@ const carro3: CarroInterface = CarroFactory.create('Prisma');
 const carro4: CarroInterface = CarroFactory.create('Carro');
 
 [carro1, carro2, carro3, carro4].forEach(carro => {
-  console.log(`Carro ${carro.getName()} - ${carro.dirigir()}`)
+  console.log(`${carro.getName()} - ${carro.dirigir()}`)
 });

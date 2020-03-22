@@ -1,15 +1,11 @@
 class Computer {
-  private placaVideo?: string
-  private memoria?: string
-  private cooler?: string
-  private processador?: string
-
-  constructor(builder: BuilderComputer) {
-    this.placaVideo = builder.placaVideo
-    this.memoria = builder.memoria
-    this.cooler = builder.cooler
-    this.processador = builder.processador
-  }
+  constructor(
+    builder: BuilderComputer,
+    private placaVideo: string | undefined = builder.placaVideo,
+    private memoria: string | undefined = builder.memoria,
+    private cooler: string | undefined = builder.cooler,
+    private processador: string | undefined = builder.processador
+  ) {}
 }
 
 class BuilderComputer {

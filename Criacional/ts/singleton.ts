@@ -5,13 +5,10 @@ interface DatabaseInterface {
 
 class MongoODM implements DatabaseInterface {
   private static instance?: DatabaseInterface
-  private uriConnection: string
 
-  private constructor(uri: string) {
-    this.uriConnection = uri
-  }
+  private constructor(private uriConnection: string) {}
 
-  connect(uri: string): DatabaseInterface {
+  public connect(uri: string): DatabaseInterface {
     if (undefined === MongoODM.instance) {
       MongoODM.instance = new MongoODM(uri)
     }
@@ -19,20 +16,17 @@ class MongoODM implements DatabaseInterface {
     return MongoODM.instance
   }
 
-  disconnect(): void {
+  public disconnect(): void {
     console.log(`disconnect to ${this.uriConnection}`)
   }
 }
 
 class PostgresORM implements DatabaseInterface {
   private static instance?: DatabaseInterface
-  private uriConnection: string
 
-  private constructor(uri: string) {
-    this.uriConnection = uri
-  }
+  private constructor(private uriConnection: string) {}
 
-  connect(uri: string): DatabaseInterface {
+  public connect(uri: string): DatabaseInterface {
     if (undefined === PostgresORM.instance) {
       PostgresORM.instance = new PostgresORM(uri)
     }
@@ -40,17 +34,13 @@ class PostgresORM implements DatabaseInterface {
     return PostgresORM.instance
   }
 
-  disconnect(): void {
+  public disconnect(): void {
     console.log(`disconnect to ${this.uriConnection}`)
   }
 }
 
 class Model {
-  private database: DatabaseInterface
-
-  constructor(database: DatabaseInterface) {
-    this.database = database
-  }
+  constructor(private database: DatabaseInterface) {}
 
   protected create(data: Array<string>): void {
     console.log('create user...')
@@ -65,9 +55,7 @@ class User extends Model {
   private name?: string
   private email?: string
 
-  constructor(database: DatabaseInterface) {
-    super(database)
-  }
+  constructor(database: DatabaseInterface) { super(database) }
 
   public create(data: Array<string>): void {
     this.id = data[0]
