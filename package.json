@@ -1,0 +1,33 @@
+{
+  "name": "design-patterns-examples",
+  "version": "1.0.0",
+  "description": "Repository created to study some Design Patterns written in PHP and TypeScript languages.",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thalysonalexr/design-patterns-example.git"
+  },
+  "keywords": [
+    "PHP",
+    "TypeScript",
+    "Design Patterns",
+    "Patterns Examples",
+    "Patterns TypeScript",
+    "Patterns PHP"
+  ],
+  "author": "Thalyson Alexandre Rodrigues de Sousa <thalysonrodrigues.dev@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/thalysonalexr/design-patterns-example/issues"
+  },
+  "homepage": "https://github.com/thalysonalexr/design-patterns-example#readme",
+  "dependencies": {
+    "reflect-metadata": "^0.1.13"
+  },
+  "devDependencies": {
+    "typescript": "^3.8.3"
+  }
+}
