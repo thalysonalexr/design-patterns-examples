@@ -5,7 +5,7 @@ export namespace inversionOfControlExample {
     new(...args: any[]): T
   }
 
-  export type GenericClassDecorator<T> = (target: T) => void
+  type GenericClassDecorator<T> = (target: T) => void
 
   const Service = () : GenericClassDecorator<Type<object>> => {
     return (target: Type<object>) : void => {
@@ -28,10 +28,6 @@ export namespace inversionOfControlExample {
       this._container.push(target)
     }
 
-    public show(): Array<any> {
-      return this._container
-    }
-
     public resolve<T>(target: Type<any>): T {
       const tokens = Reflect.getMetadata('design:paramtypes', target) || []
       const injections = tokens.map((token: any) => Ioc.getInstance().resolve(token))
@@ -44,21 +40,25 @@ export namespace inversionOfControlExample {
       typePayment: string
     }
 
+    @Service()
     export class CreditCard implements PaymentInterface {
       public typePayment: string = 'CreditCard'
     }
 
+    @Service()
     export class PaymentSlip implements PaymentInterface {
       public typePayment: string = 'PaymentSlip'
     }
 
+    @Service()
     export class BankTransfer implements PaymentInterface {
       public typePayment: string = 'BankTransfer'
     }
   }
 
+  // core domain
   export namespace Buy {
-    interface ProductInterface {
+    export interface ProductInterface {
       name: string
       price: number
     }
@@ -80,7 +80,7 @@ export namespace inversionOfControlExample {
       private _products: Array<T> = new Array<T>()
 
       // dependency injection by constructor
-      constructor(private _payment: Pay.CreditCard) {}
+      constructor(private _payment: Pay.PaymentInterface) {}
 
       public addProduct(product: T) {
         this._products.push(product)
@@ -96,12 +96,59 @@ export namespace inversionOfControlExample {
     }
   }
 
-  // inject dependency payment with credit card
-  const order1: Buy.Order<Buy.Product> = Ioc.getInstance().resolve<Buy.Order<Buy.Product>>(Buy.Order)
+  export namespace Factory {
+    export abstract class OrderCreditCard {
+      public static create(container: Ioc) {
+        const creditCard: Pay.CreditCard =
+          container.resolve<Pay.CreditCard>(Pay.CreditCard)
+        return new Buy.Order(creditCard)
+      }
+    }
 
-  order1.addProduct(new Buy.Product('Coke', 7.60))
-  order1.addProduct(new Buy.Product('Cheetos', 9.15))
-  order1.addProduct(new Buy.Product('Doritos', 10.20))
+    export abstract class OrderBankTransfer {
+      public static create(container: Ioc) {
+        const bankTransfer: Pay.BankTransfer =
+          container.resolve<Pay.BankTransfer>(Pay.BankTransfer)
+        return new Buy.Order(bankTransfer)
+      }
+    }
+
+    export abstract class OrderPaymentSlip {
+      public static create(container: Ioc) {
+        const paymentSlip: Pay.PaymentSlip =
+          container.resolve<Pay.PaymentSlip>(Pay.PaymentSlip)
+        return new Buy.Order(paymentSlip)
+      }
+    }
+  }
+
+  const products: Array<Buy.ProductInterface>= [
+    new Buy.Product('Coke', 7.60),
+    new Buy.Product('Cheetos', 9.15),
+    new Buy.Product('Ice Cream', 15.15),
+    new Buy.Product('Doritos', 10.20),
+  ]
+
+  // get container DI
+  const container: Ioc = Ioc.getInstance()
+
+  // inject dependency payment with credit card resolved by container DI
+  const order1: Buy.Order<Buy.ProductInterface> = Factory.OrderCreditCard.create(container)
+
+  order1.addProduct(products[0])
+  order1.addProduct(products[1])
+  order1.addProduct(products[2])
 
   order1.resume()
+
+  // inject dependency payment with bank transfer resolved by container DI
+  const order2: Buy.Order<Buy.ProductInterface> = Factory.OrderBankTransfer.create(container)
+
+  order2.addProduct(products[0])
+  order2.addProduct(products[0])
+  order2.addProduct(products[1])
+  order2.addProduct(products[2])
+  order2.addProduct(products[2])
+
+  order2.resume()
 }
