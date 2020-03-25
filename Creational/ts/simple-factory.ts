@@ -13,6 +13,5 @@ export namespace simpleFactoryExample {
   }
 
   const user: User = UserFactory.create('thalysonalexr', 23)
-
   console.log(user)
 }
