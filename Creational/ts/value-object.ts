@@ -14,7 +14,7 @@ export namespace valueObjectExample {
       if (!this.mask.test(String(value).toLowerCase())) {
         throw new Error(`The e-mail "${value}" format is invalid.`)
       }
-      this._value = value
+      this._value = value.toLowerCase()
     }
 
     public toString(): string {
@@ -53,7 +53,7 @@ export namespace valueObjectExample {
 
   // const email: Email = new Email('tha.motoggmail.com') // error
   // const passw: Password = new Password('Hell') // error
-  const email: Email = new Email('tha.motog@gmail.com') // ok
+  const email: Email = new Email('THA.motog@gmail.com') // ok
   const passw: Password = new Password('HelloWorld!') // ok
   
   const user: UserEntity = new UserEntity(email, passw)
