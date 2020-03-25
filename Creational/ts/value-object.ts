@@ -33,7 +33,7 @@ export namespace valueObjectExample {
       this._value = bcrypt.hashSync(value, 10)
     }
 
-    public toString(): string {
+    public toString = () : string => {
       return this._value
     }
   }
@@ -63,6 +63,5 @@ export namespace valueObjectExample {
 
   // The 'value objects' equality are not based on their identity... Two value objects are equals if they have the same value(s) and not if they are the same object.
   const nativeEmail = { toString: (): string => 'tha.motog@gmail.com' }
-  console.log(email.toString() === nativeEmail.toString()) // true
-  
+  console.log(`${email}` === `${nativeEmail}`) // true, is equals
 }
